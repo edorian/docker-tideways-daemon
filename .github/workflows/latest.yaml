@@ -37,7 +37,7 @@ jobs:
         
       - name: Push base image specific tags to Docker Hub
         if: github.ref == 'refs/heads/main'
-        working-directory: ${{ matrix.version }}
+        working-directory: ${{ matrix.base-image }}
         run: |
           docker push edorian/tideways-daemon:latest-${{ matrix.base-image }}
           docker push edorian/tideways-daemon:$(grep -P "^ENV TIDEWAYS_DAEMON_VERSION" Dockerfile | grep -oP "\d\.\d+\.\d+")-${{ matrix.base-image }}
