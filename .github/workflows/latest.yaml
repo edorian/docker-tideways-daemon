@@ -23,9 +23,9 @@ jobs:
           --pull \
           --no-cache \
           --tag edorian/tideways-daemon:latest \
-          --tag edorian/tideways-daemon:latest-${{ matrix.base-image }}
-          --tag edorian/tideways-daemon:$(grep -P "^ENV TIDEWAYS_DAEMON_VERSION" Dockerfile | grep -oP "\d\.\d+\.\d+")
-          --tag edorian/tideways-daemon:$(grep -P "^ENV TIDEWAYS_DAEMON_VERSION" Dockerfile | grep -oP "\d\.\d+\.\d+")-${{ matrix.base-image }}
+          --tag edorian/tideways-daemon:latest-${{ matrix.base-image }} \
+          --tag edorian/tideways-daemon:$(grep -P "^ENV TIDEWAYS_DAEMON_VERSION" Dockerfile | grep -oP "\d\.\d+\.\d+") \
+          --tag edorian/tideways-daemon:$(grep -P "^ENV TIDEWAYS_DAEMON_VERSION" Dockerfile | grep -oP "\d\.\d+\.\d+")-${{ matrix.base-image }} \
           .
 
       - name: Login to Docker Hub
