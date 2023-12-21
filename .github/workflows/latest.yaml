@@ -23,6 +23,9 @@ jobs:
           --pull \
           --no-cache \
           --tag edorian/tideways-daemon:latest \
+          --tag edorian/tideways-daemon:latest-${{ matrix.base-image }}
+          --tag edorian/tideways-daemon:$(grep -P "^ENV TIDEWAYS_DAEMON_VERSION" Dockerfile | grep -oP "\d\.\d+\.\d+")
+          --tag edorian/tideways-daemon:$(grep -P "^ENV TIDEWAYS_DAEMON_VERSION" Dockerfile | grep -oP "\d\.\d+\.\d+")-${{ matrix.base-image }}
           .
 
       - name: Login to Docker Hub
@@ -32,8 +35,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
         
-      - name: Push to Docker Hub
+      - name: Push base image specific tags to Docker Hub
         if: github.ref == 'refs/heads/main'
         working-directory: ${{ matrix.version }}
         run: |
+          docker push edorian/tideways-daemon:latest-${{ matrix.base-image }}
+          docker push edorian/tideways-daemon:$(grep -P "^ENV TIDEWAYS_DAEMON_VERSION" Dockerfile | grep -oP "\d\.\d+\.\d+")-${{ matrix.base-image }}
+
+      - name: Push generic tags
+        if: github.ref == 'refs/heads/main'
+        working-directory: debian-slim #alpine
+        run: |
           docker push edorian/tideways-daemon:latest
+          docker push edorian/tideways-daemon:$(grep -P "^ENV TIDEWAYS_DAEMON_VERSION" Dockerfile | grep -oP "\d\.\d+\.\d+")
+
