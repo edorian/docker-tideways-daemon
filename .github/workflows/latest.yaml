@@ -43,7 +43,7 @@ jobs:
           docker push edorian/tideways-daemon:$(grep -P "^ENV TIDEWAYS_DAEMON_VERSION" Dockerfile | grep -oP "\d\.\d+\.\d+")-${{ matrix.base-image }}
 
       - name: Push generic tags
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && matrix.base-image == 'alpine'
         working-directory: alpine
         run: |
           docker push edorian/tideways-daemon:latest
